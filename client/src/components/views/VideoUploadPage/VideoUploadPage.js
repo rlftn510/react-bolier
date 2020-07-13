@@ -45,9 +45,25 @@ function VideoUploadPage() {
          formData.append('file', files[0])
          console.log(files)
          Axios.post('/api/video/uploadfiles', formData, config)
-            .then(res => {
-               if(res.data.success) {
-                  console.log(res)
+            .then(response => {
+               if(response.data.success) {
+                  console.log(response)
+                  
+                  let variable = {
+                     url: response.data.url,
+                     fileName: response.data.fileName
+                  }
+                  console.warn('123')
+                  
+                  Axios.post('/api/video/thumbnail', variable)
+                     .then(response => {
+                        console.log(response)
+                        if(response.data.success) {
+                           console.log(response)
+                        } else {
+                           alert('thumbnail API faild')
+                        }
+                     })
                } else {
                   alert('실패')
                }
@@ -64,7 +80,7 @@ function VideoUploadPage() {
                   <Dropzone
                   onDrop={onDrop}
                   multiple={false}
-                  maxSize={100000000}
+                  maxSize={800000000}
                   >
                   {({ getRootProps, getInputProps}) => (
                      <div style={{ width: '300px', height: '240px', border: '1px solid lightgray', display: 'flex',
