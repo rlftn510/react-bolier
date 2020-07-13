@@ -66,7 +66,7 @@ router.post("/uploadfiles", (req, res) => {
       })
       .on('end', function () {
          console.log('Screenshots taken');
-         return res.json({ success: true, url: filePath, fileDuration: fileDuration})
+         return res.json({ success: true, url: thumbsFilePath, fileDuration: fileDuration})
          // thumbsFilePath: thumbsFilePath, fileDuration: fileDuration}
       })
       .on('error', function(err) {

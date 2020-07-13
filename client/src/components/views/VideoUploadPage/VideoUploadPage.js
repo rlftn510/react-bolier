@@ -25,6 +25,10 @@ function VideoUploadPage() {
       const [Private, setPrivate] = useState(0);
       const [Category, setCategory] = useState("FIle & Animation");
 
+      const [FilePath, setFilePath] = useState('')
+      const [Duration, setDuration] = useState('')
+      const [ThumbnailPath, setThumbnailPath] = useState('')
+
       const onTitleChange = (e) => {
          setVideoTitle(e.currentTarget.value)
       }
@@ -53,13 +57,14 @@ function VideoUploadPage() {
                      url: response.data.url,
                      fileName: response.data.fileName
                   }
-                  console.warn('123')
-                  
+
+                  setFilePath(response.data.url)
                   Axios.post('/api/video/thumbnail', variable)
                      .then(response => {
                         console.log(response)
                         if(response.data.success) {
-                           console.log(response)
+                           setDuration(response.data.fileDuration)
+                           setThumbnailPath(response.data.url)
                         } else {
                            alert('thumbnail API faild')
                         }
@@ -92,9 +97,11 @@ function VideoUploadPage() {
                   )}
 
                   </Dropzone>
-                  <div>
-                     <img src alt />
-                  </div>
+                  {ThumbnailPath && 
+                     <div>
+                        <img src={`http://localhost:5000/${ThumbnailPath}`} alt="thumbnail" />
+                     </div>
+                  }
                </div>
                <br/>
                <br/>
