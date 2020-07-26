@@ -23,12 +23,12 @@ function LandingPage() {
    }, [])
 
    const renderCards = Video.map((video, index) => {
-
+      console.log(video)
       var minutes = Math.floor(video.duration / 60)
       var seconds = Math.floor(video.duration - minutes * 60)
 
       return <Col lg={6} md={8} xs={4}>
-         <a href={`/video/post/${video.id}`}>
+         <a href={`/video/${video._id}`}>
             <div style={{ position: 'relative' }}>
                <img style={{width: '100%'}} src={`http://localhost:5000/${video.thumbnail}`}/>
                <div className="duration">
