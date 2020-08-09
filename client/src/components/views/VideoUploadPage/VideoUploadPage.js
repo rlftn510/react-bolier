@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import { Form, Typography, Input, Button, Icon, message} from 'antd'
 import Dropzone from 'react-dropzone'
 import Axios from 'axios'

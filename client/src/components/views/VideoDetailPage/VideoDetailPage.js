@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Row, Col, List, Avatar } from 'antd'
 import Axios from 'axios'
 import SideVideo from './Sections/SideVideo.js'
+import Subscribe from "./Sections/Subscribe.js";
 
 function VideoDetailPage(props) {
    const videoId = props.match.params.videoId
@@ -12,14 +13,19 @@ function VideoDetailPage(props) {
       
       Axios.post('/api/video/getVideoDetail', variable)
          .then(response => {
+            console.log(response)
             if(response.data.success) {
                setVideoDetail(response.data.videoDetail)
+               // setTimeout(function() {
+               //    console.log(VideoDetail)
+               // }, 3000)
             } else {
                alert('비디오 정보를 가져오는데 실패했습니다.')
             }
          })
 
    }, [])
+   
 
 
    if(VideoDetail.writer) {
@@ -29,7 +35,7 @@ function VideoDetailPage(props) {
                <div style={{ width: '100%', padding: '3rem 4rem'}}>
                   <video style={{ width: '100%' }} src={`http://localhost:5000/${VideoDetail.filePath}`} controls/>
                   <List.Item
-                     actions
+                     actions={[<Subscribe userTo={VideoDetail.writer._id}/>]}
                   >
                      <List.Item.Meta
                         avatar={<Avatar src={`VideoDetail.writer.image`}/>}

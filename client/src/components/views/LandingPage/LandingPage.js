@@ -16,6 +16,10 @@ function LandingPage() {
          .then(response => {
             if(response.data.success) {
                setVideo(response.data.videos)
+               console.log(response.data.videos)
+               setTimeout(function() {
+                  console.log(Video)
+               }, 3000)
             } else {
                alert('비디오 가져오기를 실패 했습니다.')
             }
