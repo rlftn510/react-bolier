@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import Axios from 'axios'
 
-
 function Subscribe(props) {
    
    const [SubscribeNumber, setSubscribeNumber] = useState(0)
@@ -18,9 +17,9 @@ function Subscribe(props) {
             }
          })
 
-      let subscribedVarialbe = { userTo: props.userTo, userFrom: localStorage.getItem('userId')}
+      let subscribedVariable = { userTo: props.userTo, userFrom: localStorage.getItem('userId')}
 
-      Axios.post('/api/subscribe/subscribed', subscribedVarialbe)
+      Axios.post('/api/subscribe/subscribed', subscribedVariable)
          .then(response => {
             if(response.data.success) {
                setSubscribed(response.data.Subscribed)
@@ -30,11 +29,40 @@ function Subscribe(props) {
          })
    }, [])
 
+   const onSubscribe = () => {
+      let subscribedVariable = {
+         userTo: props.userTo,
+         userFrom: props.userFrom
+      }
+
+      if(Subscribed) {
+         Axios.post(`/api/subscribe/unSubscribe`, subscribedVariable)
+            .then(response => {
+               if(response.data.success) {
+                  setSubscribeNumber(SubscribeNumber - 1)
+                  setSubscribed(!Subscribed)
+               } else {
+                  alert('구독 취소 실패했습니다.')
+               }
+            })
+      } else {
+         Axios.post(`/api/subscribe/subscribe`, subscribedVariable)
+            .then(response => {
+               if(response.data.success) {
+                  setSubscribeNumber(SubscribeNumber + 1)
+                  setSubscribed(!Subscribed)
+               } else {
+                  alert('구독 실패했습니다.')
+               }
+            })
+      }
+   }
+
    return (
       <div>
          <button
             style={{ 
-               backgroundColor:`${Subscribe ? '#cc0000' : '#aaa'}`,
+               backgroundColor:`${Subscribed ? '#aaa' : '#cc0000'}`,
                borderRadius: '4px',
                color: '#fff',
                padding: '10px 16px',
@@ -42,7 +70,7 @@ function Subscribe(props) {
                fontSize: '1rem',
                textTransform: 'uppercase'
             }}
-            onClick
+            onClick={onSubscribe}
          >
             {SubscribeNumber} {Subscribed ? 'SUBCRIBED' : 'SUBCTIBE'}
          </button>
