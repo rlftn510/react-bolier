@@ -32,7 +32,7 @@ router.post("/subscribeNumber", (req, res) => {
            result = true
        }
 
-       res.status(200).json({ success: true, subcribed: result  })
+       res.status(200).json({ success: true, subcribed: result })
    })
 });
 
@@ -50,11 +50,11 @@ router.post("/unSubscribe", (req, res) => {
 // 구독하기
 router.post("/subscribe", (req, res) => {
 
-   const subscribe = new Subscriber()
-
+   const subscribe = new Subscriber(req.body);
+   console.log(req.body)
    subscribe.save((err, doc) => {
-      if(err) return res.status(400).json({ success: false, err})
-      res.status(200).json({ success: true })
+      if(err) return res.json({ success: false, err })
+      return res.status(200).json({ success: true })
    })
 });
 

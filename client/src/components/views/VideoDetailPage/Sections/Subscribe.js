@@ -7,7 +7,7 @@ function Subscribe(props) {
    const [Subscribed, setSubscribed] = useState(false)
 
    useEffect(() => {
-      let variable = { userTo: props.userTo }
+      let variable = { userTo: props.userTo , userFrom: props.userFrom}
       Axios.post('/api/subscribe/subscribeNumber', variable)
          .then(response => {
             if(response.data.success) {
