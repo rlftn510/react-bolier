@@ -5,28 +5,42 @@ import SideVideo from './Sections/SideVideo.js'
 import Subscribe from "./Sections/Subscribe.js";
 import Comment from './Sections/Comment'
 
+
 function VideoDetailPage(props) {
    const videoId = props.match.params.videoId
    const variable = {videoId: videoId}
    const [VideoDetail, setVideoDetail] = useState([])
+   const [Comments, setComments] = useState([])
    
    useEffect(() => {
       
       Axios.post('/api/video/getVideoDetail', variable)
          .then(response => {
-            console.log(response)
+            
             if(response.data.success) {
                setVideoDetail(response.data.videoDetail)
-               // setTimeout(function() {
-               //    console.log(VideoDetail)
-               // }, 3000)
+               
+            } else {
+               alert('비디오 정보를 가져오는데 실패했습니다.')
+            }
+         })
+
+      Axios.post('/api/comment/getComments', variable)
+         .then(response => {
+            if(response.data.success) {
+               setComments(response.data.comments)
+               console.log(response.data.comments)
             } else {
                alert('비디오 정보를 가져오는데 실패했습니다.')
             }
          })
 
    }, [])
-   
+
+   const refreshFunction = (newComment) => {
+      setComments(Comments.concat(newComment))
+   }
+
 
    if(VideoDetail.writer) {
 
@@ -49,7 +63,7 @@ function VideoDetailPage(props) {
                   </List.Item>
 
                   {/* comment */}
-                  <Comment postId={videoId}/>
+                  <Comment refreshFunction={refreshFunction} postId={videoId} commentLists={Comments}/>
                </div>
             </Col>
             <Col lg={6} xs={24}>

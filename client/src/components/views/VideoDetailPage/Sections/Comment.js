@@ -22,7 +22,8 @@ function Comment(props) {
       }
       Axios.post('/api/comment/saveComment', variabale).then(res => {
          if(res.data.success) {
-            console.log(res.data)
+            setCommentValue('')
+            props.refreshFunction(res.data.result)
          } else {
             alert('저장실패')
          }
@@ -36,7 +37,14 @@ function Comment(props) {
          <hr />
 
          {/* commnet List */}
-         <SingleComment />
+         {props.commentLists && props.commentLists.map((comment, index) => (
+            (!comment.responseTo && 
+               <SingleComment comment={comment} postId={videoId} refreshFunction={props.refreshFunction}/>
+            )
+         ))
+
+         }
+         
          {/* Root commnet from */}
 
          <form style={{ display: 'flex' }} onSubmit={onSubmit}>
